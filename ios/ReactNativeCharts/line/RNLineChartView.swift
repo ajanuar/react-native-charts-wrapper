@@ -6,10 +6,10 @@ import DGCharts
 import SwiftyJSON
 
 class RNLineChartView: RNBarLineChartViewBase {
-    let _chart: LineChartView;
+    let _chart: ForkedLineChartView;
     let _dataExtract : LineDataExtract;
 
-    override var chart: LineChartView {
+    override var chart: ForkedLineChartView {
         return _chart
     }
 
@@ -19,7 +19,7 @@ class RNLineChartView: RNBarLineChartViewBase {
 
     override init(frame: CoreGraphics.CGRect) {
 
-        self._chart = LineChartView(frame: frame)
+        self._chart = ForkedLineChartView(frame: frame)
         self._dataExtract = LineDataExtract()
 
         super.init(frame: frame);
