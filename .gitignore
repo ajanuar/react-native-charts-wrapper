@@ -13,23 +13,3 @@ Example.xcworkspace
 node_modules
 *.iml
 xcuserdata
-
-# TypeScript build artifacts
-lib/**/*.js
-lib/**/*.js.map
-lib/**/*.d.ts
-
-# Node
-node_modules/
-npm-debug.log
-yarn-error.log
-yarn-debug.log
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS specific
-.DS_Store
