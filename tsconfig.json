@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",
+        "declaration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": false, // Start with false to avoid too many errors initially
+        "skipLibCheck": true,
+        "jsx": "react-native",
+        "lib": [
+            "es2016"
+        ],
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "outDir": "./lib",
+        "sourceMap": true
+    },
+    "include": [
+        "lib/**/*",
+        "index.d.ts",
+        "index.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/__tests__/*"
+    ]
+}

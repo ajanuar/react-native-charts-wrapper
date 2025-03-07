@@ -27,6 +27,7 @@
     "ios/**/*.swift",
     "lib",
     "index.js",
+    "index.d.ts",
     "react-native-charts-wrapper.podspec",
     "ios/ReactNativeCharts/ReactNativeCharts.xcodeproj/project.pbxproj"
   ],
@@ -36,5 +37,17 @@
   "peerDependencies": {
     "react": ">=16.0.0"
   },
-  "packageManager": "yarn@3.6.4+sha256.7f7d51b38db0d94adf25c512e3f3d3b47d23c97922eecc540f7440f116bdb99a"
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-native": "^0.70.0",
+    "typescript": "^4.9.5"
+  },
+  "packageManager": "yarn@3.6.4+sha256.7f7d51b38db0d94adf25c512e3f3d3b47d23c97922eecc540f7440f116bdb99a",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "yarn build",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf lib/*.d.ts lib/*.js.map lib/*.js"
+  }
 }

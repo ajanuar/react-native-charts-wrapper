@@ -240,6 +240,24 @@ check Example->TimeSeriesLineChart for details.
 you can set chart to fixed width & height, or flex:1
   
 
+## TypeScript Support
+
+This library includes TypeScript type definitions. To use them:
+
+1. Install the library:
+```bash
+yarn add react-native-charts-wrapper
+```
+
+2. Import and use components with TypeScript:
+```typescript
+import { BarChart, LineChart } from 'react-native-charts-wrapper';
+import type { AxisIface, XAxisIface } from 'react-native-charts-wrapper';
+
+// Use the components and types in your code
+```
+
+TypeScript definitions are provided for all chart components and configuration interfaces.
 
 
 ## License

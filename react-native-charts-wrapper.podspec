@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
   s.dependency 'SwiftyJSON', '5.0'
   s.dependency 'DGCharts', '5.0.0'
 
-
+  install_modules_dependencies(s)
 end
