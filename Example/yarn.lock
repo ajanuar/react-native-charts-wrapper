@@ -9974,8 +9974,11 @@ __metadata:
 "react-native-charts-wrapper@portal:../::locator=example%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "react-native-charts-wrapper@portal:../::locator=example%40workspace%3A."
+  dependencies:
+    prop-types: ^15.8.1
   peerDependencies:
     react: ">=16.0.0"
+    react-native: ">=0.70.0"
   languageName: node
   linkType: soft
 

@@ -19,8 +19,8 @@
     },
     "include": [
         "lib/**/*",
-        "index.d.ts",
-        "index.ts"
+        "js/index.ts",
+        "js/index.ts"
     ],
     "exclude": [
         "node_modules",
