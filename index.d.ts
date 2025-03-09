@@ -1,4 +1,4 @@
-import BarChart from './lib/BarChart';
+import BarChart from './lib/BarChartNativeComponent.ts';
 import HorizontalBarChart from './lib/HorizontalBarChart';
 import BubbleChart from './lib/BubbleChart';
 import CandleStickChart from './lib/CandleStickChart';
