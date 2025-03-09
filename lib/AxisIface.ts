@@ -1,63 +1,68 @@
-import PropTypes from 'prop-types';
+export interface GridDashedLine {
+  lineLength: number;
+  spaceLength: number;
+  phase: number;
+}
 
-export const axisIface = {
+export interface LimitLine {
+  limit: number;
+  label?: string;
+  lineColor?: number;
+  lineWidth?: number;
+  valueTextColor?: number;
+  valueFont?: number;
+  fontFamily?: string;
+  fontStyle?: string;
+  fontWeight?: string;
+  labelPosition?: 'LEFT_TOP' | 'LEFT_BOTTOM' | 'RIGHT_TOP' | 'RIGHT_BOTTOM';
+  lineDashPhase?: number;
+  lineDashLengths?: number[];
+}
+
+export interface ZeroLine {
+  enabled?: boolean;
+  lineWidth?: number;
+  lineColor?: number;
+}
+
+export type ValueFormatterType = 'largeValue' | 'percent' | 'date' | string | string[];
+export type TimeUnitType = 'MILLISECONDS' | 'SECONDS' | 'MINUTES' | 'HOURS' | 'DAYS';
+
+export interface AxisInterface {
   // what is drawn
-  enabled: PropTypes.bool,
-  drawLabels: PropTypes.bool,
-  drawAxisLine: PropTypes.bool,
-  drawGridLines: PropTypes.bool,
+  enabled?: boolean;
+  drawLabels?: boolean;
+  drawAxisLine?: boolean;
+  drawGridLines?: boolean;
 
   // style
-  textColor: PropTypes.number,
-  textSize: PropTypes.number,
-  fontFamily: PropTypes.string,
-  fontStyle: PropTypes.string,
-  fontWeight: PropTypes.string,
-  gridColor: PropTypes.number,
-  gridLineWidth: PropTypes.number,
-  axisLineColor: PropTypes.number,
-  axisLineWidth: PropTypes.number,
-  gridDashedLine: PropTypes.shape({
-    lineLength: PropTypes.number,
-    spaceLength: PropTypes.number,
-    phase: PropTypes.number
-  }),
+  textColor?: number;
+  textSize?: number;
+  fontFamily?: string;
+  fontStyle?: string;
+  fontWeight?: string;
+  gridColor?: number;
+  gridLineWidth?: number;
+  axisLineColor?: number;
+  axisLineWidth?: number;
+  gridDashedLine?: GridDashedLine;
 
   // limit lines
-  limitLines: PropTypes.arrayOf(
-    PropTypes.shape({
-      limit: PropTypes.number.isRequired,
-      label: PropTypes.string,
-      lineColor: PropTypes.number,
-      lineWidth: PropTypes.number,
-      valueTextColor: PropTypes.number,
-      valueFont: PropTypes.number,
-      fontFamily: PropTypes.string,
-      fontStyle: PropTypes.string,
-      fontWeight: PropTypes.string,
-      labelPosition: PropTypes.oneOf(['LEFT_TOP', 'LEFT_BOTTOM', 'RIGHT_TOP', 'RIGHT_BOTTOM']),
-      lineDashPhase: PropTypes.number,
-      lineDashLengths: PropTypes.arrayOf(PropTypes.number)
-    })
-  ),
-  drawLimitLinesBehindData: PropTypes.bool,
+  limitLines?: LimitLine[];
+  drawLimitLinesBehindData?: boolean;
 
-  axisMaximum: PropTypes.number,
-  axisMinimum: PropTypes.number,
-  granularity: PropTypes.number,
-  granularityEnabled: PropTypes.bool,
+  axisMaximum?: number;
+  axisMinimum?: number;
+  granularity?: number;
+  granularityEnabled?: boolean;
 
-  labelCount: PropTypes.number,
-  labelCountForce: PropTypes.bool,
+  labelCount?: number;
+  labelCountForce?: boolean;
 
-  centerAxisLabels: PropTypes.bool, // Centers the axis labels instead of drawing them at their original position. This is useful especially for grouped BarChart.
+  centerAxisLabels?: boolean; // Centers the axis labels instead of drawing them at their original position. This is useful especially for grouped BarChart.
 
   // formatting
-  valueFormatter: PropTypes.oneOfType([
-    PropTypes.oneOf(['largeValue', 'percent', 'date']),
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string)
-  ]),
+  valueFormatter?: ValueFormatterType;
 
   // valueFormatterPattern, since, timeUnit are used when valueFormatter is 'date'
   // since: milliseconds of 2018-6-1, timeUnit: DAYS, x:9, valueFormatterPattern: YYYY-MM-dd
@@ -67,36 +72,24 @@ export const axisIface = {
   // so in android, there will be precision loss when you use MILLISECONDS/SECOND/MINUTES as x value.   
   // you can use a different since like seconds of 2019 or use timeUnit DAYS, then x value will be within a valid range.
 
-  valueFormatterPattern: PropTypes.string,
-  since: PropTypes.number, // milliseconds from 1970-1-1 when x=0
-  timeUnit: PropTypes.oneOf(['MILLISECONDS', 'SECONDS', 'MINUTES', 'HOURS', 'DAYS']), // timeUnit of x,
-};
+  valueFormatterPattern?: string;
+  since?: number; // milliseconds from 1970-1-1 when x=0
+  timeUnit?: TimeUnitType; // timeUnit of x,
+}
 
-export const xAxisIface = {
-  ...axisIface,
+export interface XAxisInterface extends AxisInterface {
+  labelRotationAngle?: number;
+  avoidFirstLastClipping?: boolean;
+  position?: 'TOP' | 'BOTTOM' | 'BOTH_SIDED' | 'TOP_INSIDE' | 'BOTTOM_INSIDE';
+  yOffset?: number;
+}
 
-  labelRotationAngle: PropTypes.number,
-  avoidFirstLastClipping: PropTypes.bool,
-  position: PropTypes.oneOf(['TOP', 'BOTTOM', 'BOTH_SIDED', 'TOP_INSIDE', 'BOTTOM_INSIDE']),
-  yOffset: PropTypes.number
-};
-
-export const yAxisIface = {
-  ...axisIface,
-
-  inverted: PropTypes.bool,
-  spaceTop: PropTypes.number,
-  spaceBottom: PropTypes.number,
-
-  position: PropTypes.oneOf(['OUTSIDE_CHART', 'INSIDE_CHART']),
-
-  maxWidth: PropTypes.number,
-  minWidth: PropTypes.number,
-
-  // zero line
-  zeroLine: PropTypes.shape({
-    enabled: PropTypes.bool,
-    lineWidth: PropTypes.number,
-    lineColor: PropTypes.number
-  })
-};
+export interface YAxisInterface extends AxisInterface {
+  inverted?: boolean;
+  spaceTop?: number;
+  spaceBottom?: number;
+  position?: 'OUTSIDE_CHART' | 'INSIDE_CHART';
+  maxWidth?: number;
+  minWidth?: number;
+  zeroLine?: ZeroLine;
+}
