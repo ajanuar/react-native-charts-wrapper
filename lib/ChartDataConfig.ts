@@ -1,263 +1,224 @@
-import PropTypes from "prop-types";
-import ChartDataSetConfig from "./ChartDataSetConfig";
+import { 
+  CommonConfig, 
+  BarLineScatterCandleBubbleConfig, 
+  LineScatterCandleRadarConfig, 
+  LineRadarConfig 
+} from "./ChartDataSetConfig";
 
-const lineData = PropTypes.shape({
-  dataSets: PropTypes.arrayOf(
-    PropTypes.shape({
-      values: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-          PropTypes.shape({
-            x: PropTypes.number,
-            y: PropTypes.number.isRequired,
-            marker: PropTypes.string,
-            icon: PropTypes.shape({
-              bundle: PropTypes.object,
-              width: PropTypes.number,
-              height: PropTypes.number
-            })
-          }),
-          PropTypes.number
-        ])
-      ),
-      label: PropTypes.string.isRequired,
-      config: PropTypes.shape({
-        ...ChartDataSetConfig.common,
-        ...ChartDataSetConfig.barLineScatterCandleBubble,
-        ...ChartDataSetConfig.lineScatterCandleRadar,
-        ...ChartDataSetConfig.lineRadar,
+// Value types
+export interface LineValue {
+  x?: number;
+  y: number;
+  marker?: string;
+  icon?: {
+    bundle?: any;
+    width?: number;
+    height?: number;
+  };
+}
 
-        circleRadius: PropTypes.number,
-        drawCircles: PropTypes.bool,
-        mode: PropTypes.oneOf([
-          "LINEAR",
-          "STEPPED",
-          "CUBIC_BEZIER",
-          "HORIZONTAL_BEZIER"
-        ]),
-        drawCubicIntensity: PropTypes.number,
-        circleColor: PropTypes.number,
-        circleColors: PropTypes.arrayOf(PropTypes.number),
-        circleHoleColor: PropTypes.number,
-        drawCircleHole: PropTypes.bool,
-        fillFormatter: PropTypes.shape({
-          min: PropTypes.number.isRequired,
-        }),
+export interface BarValue {
+  x?: number;
+  y: number | number[];
+  marker?: string | string[];
+}
 
-        dashedLine: PropTypes.shape({
-          lineLength: PropTypes.number.isRequired,
-          spaceLength: PropTypes.number.isRequired,
-          phase: PropTypes.number
-        })
-      })
-    })
-  )
-});
+export interface BubbleValue {
+  x?: number;
+  y: number;
+  size: number;
+  marker?: string;
+}
 
-const barData = PropTypes.shape({
-  dataSets: PropTypes.arrayOf(
-    PropTypes.shape({
-      values: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-          PropTypes.shape({
-            x: PropTypes.number,
-            y: PropTypes.oneOfType([
-              PropTypes.number,
-              PropTypes.arrayOf(PropTypes.number)
-            ]),
-            marker: PropTypes.oneOfType([
-              PropTypes.string,
-              PropTypes.arrayOf(PropTypes.string)
-            ])
-          }),
-          PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number)
-          ])
-        ])
-      ),
-      label: PropTypes.string.isRequired,
-      config: PropTypes.shape({
-        ...ChartDataSetConfig.common,
-        ...ChartDataSetConfig.barLineScatterCandleBubble,
+export interface CandleValue {
+  x?: number;
+  shadowH: number;
+  shadowL: number;
+  open: number;
+  close: number;
+  marker?: string;
+}
 
-        barShadowColor: PropTypes.number,
-        highlightAlpha: PropTypes.number, // using android format (0-255), not ios format(0-1), the conversion is x/255
-        stackLabels: PropTypes.arrayOf(PropTypes.string)
-      })
-    })
-  ),
+export interface PieValue {
+  value: number;
+  label?: string;
+}
 
-  config: PropTypes.shape({
-    barWidth: PropTypes.number,
-    group: PropTypes.shape({
-      fromX: PropTypes.number.isRequired,
-      groupSpace: PropTypes.number.isRequired,
-      barSpace: PropTypes.number.isRequired
-    })
-  })
-});
+export interface RadarValue {
+  value: number;
+}
 
-const bubbleData = PropTypes.shape({
-  dataSets: PropTypes.arrayOf(
-    PropTypes.shape({
-      values: PropTypes.arrayOf(
-        PropTypes.shape({
-          x: PropTypes.number,
-          y: PropTypes.number.isRequired,
-          size: PropTypes.number.isRequired,
-          marker: PropTypes.string
-        })
-      ),
-      label: PropTypes.string.isRequired,
-      config: PropTypes.shape({
-        ...ChartDataSetConfig.common,
-        ...ChartDataSetConfig.barLineScatterCandleBubble
-      })
-    })
-  )
-});
+// Line chart specific configs
+export interface LineDataSetConfig extends CommonConfig, BarLineScatterCandleBubbleConfig, LineScatterCandleRadarConfig, LineRadarConfig {
+  circleRadius?: number;
+  drawCircles?: boolean;
+  mode?: "LINEAR" | "STEPPED" | "CUBIC_BEZIER" | "HORIZONTAL_BEZIER";
+  drawCubicIntensity?: number;
+  circleColor?: number;
+  circleColors?: number[];
+  circleHoleColor?: number;
+  drawCircleHole?: boolean;
+  fillFormatter?: {
+    min: number;
+  };
+  dashedLine?: {
+    lineLength: number;
+    spaceLength: number;
+    phase?: number;
+  };
+}
 
-const candleData = PropTypes.shape({
-  dataSets: PropTypes.arrayOf(
-    PropTypes.shape({
-      values: PropTypes.arrayOf(
-        PropTypes.shape({
-          x: PropTypes.number,
-          shadowH: PropTypes.number.isRequired,
-          shadowL: PropTypes.number.isRequired,
-          open: PropTypes.number.isRequired,
-          close: PropTypes.number.isRequired,
-          marker: PropTypes.string
-        })
-      ),
-      label: PropTypes.string.isRequired,
-      config: PropTypes.shape({
-        ...ChartDataSetConfig.common,
-        ...ChartDataSetConfig.barLineScatterCandleBubble,
-        ...ChartDataSetConfig.lineScatterCandleRadar,
+export interface LineDataSet {
+  values: Array<LineValue | number>;
+  label: string;
+  config?: LineDataSetConfig;
+}
 
-        barSpace: PropTypes.number,
-        shadowWidth: PropTypes.number,
-        shadowColor: PropTypes.number,
-        shadowColorSameAsCandle: PropTypes.bool,
-        neutralColor: PropTypes.number,
-        decreasingColor: PropTypes.number,
-        decreasingPaintStyle: PropTypes.oneOf([
-          "FILL",
-          "STROKE",
-          "FILL_AND_STROKE"
-        ]),
-        increasingColor: PropTypes.number,
-        increasingPaintStyle: PropTypes.oneOf([
-          "FILL",
-          "STROKE",
-          "FILL_AND_STROKE"
-        ])
-      })
-    })
-  )
-});
+export interface LineData {
+  dataSets: LineDataSet[];
+}
 
-const pieData = PropTypes.shape({
-  dataSets: PropTypes.arrayOf(
-    PropTypes.shape({
-      values: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-          PropTypes.shape({
-            value: PropTypes.number.isRequired,
-            label: PropTypes.string
-          }),
-          PropTypes.number
-        ])
-      ),
-      label: PropTypes.string.isRequired,
-      config: PropTypes.shape({
-        ...ChartDataSetConfig.common,
+// Bar chart specific configs
+export interface BarDataSetConfig extends CommonConfig, BarLineScatterCandleBubbleConfig {
+  barShadowColor?: number;
+  highlightAlpha?: number;
+  stackLabels?: string[];
+}
 
-        sliceSpace: PropTypes.number,
-        selectionShift: PropTypes.number,
-        xValuePosition: PropTypes.oneOf(["INSIDE_SLICE", "OUTSIDE_SLICE"]),
-        yValuePosition: PropTypes.oneOf(["INSIDE_SLICE", "OUTSIDE_SLICE"]),
-        valueLinePart1Length: PropTypes.number,
-        valueLinePart2Length: PropTypes.number,
-        valueLineColor: PropTypes.number,
-        valueLineWidth: PropTypes.number,
-        valueLinePart1OffsetPercentage: PropTypes.number,
-        valueLineVariableLength: PropTypes.bool
-      })
-    })
-  )
-});
+export interface BarDataSet {
+  values: Array<BarValue | number | number[]>;
+  label: string;
+  config?: BarDataSetConfig;
+}
 
-const radarData = PropTypes.shape({
-  dataSets: PropTypes.arrayOf(
-    PropTypes.shape({
-      values: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-          PropTypes.shape({ value: PropTypes.number.isRequired }),
-          PropTypes.number
-        ])
-      ),
-      label: PropTypes.string.isRequired,
-      config: PropTypes.shape({
-        ...ChartDataSetConfig.common,
-        ...ChartDataSetConfig.lineScatterCandleRadar,
-        ...ChartDataSetConfig.lineRadar
-      })
-    })
-  ),
-  labels: PropTypes.arrayOf(PropTypes.string)
-});
+export interface BarDataConfig {
+  barWidth?: number;
+  group?: {
+    fromX: number;
+    groupSpace: number;
+    barSpace: number;
+  };
+}
 
-const scatterData = PropTypes.shape({
-  dataSets: PropTypes.arrayOf(
-    PropTypes.shape({
-      values: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-          PropTypes.shape({
-            x: PropTypes.number,
-            y: PropTypes.number.isRequired,
-            marker: PropTypes.string
-          }),
-          PropTypes.number
-        ])
-      ),
-      label: PropTypes.string.isRequired,
-      config: PropTypes.shape({
-        ...ChartDataSetConfig.common,
-        ...ChartDataSetConfig.barLineScatterCandleBubble,
-        ...ChartDataSetConfig.lineScatterCandleRadar,
+export interface BarData {
+  dataSets: BarDataSet[];
+  config?: BarDataConfig;
+}
 
-        scatterShapeSize: PropTypes.number,
-        scatterShape: PropTypes.oneOf([
-          "SQUARE",
-          "CIRCLE",
-          "TRIANGLE",
-          "CROSS",
-          "X"
-        ]),
-        scatterShapeHoleColor: PropTypes.number,
-        scatterShapeHoleRadius: PropTypes.number
-      })
-    })
-  )
-});
+// Bubble chart specific configs
+export interface BubbleDataSetConfig extends CommonConfig, BarLineScatterCandleBubbleConfig {}
 
-const combinedData = PropTypes.shape({
-  lineData: lineData,
-  barData: barData,
-  scatterData: scatterData,
-  candleData: candleData,
-  bubbleData: bubbleData
-});
+export interface BubbleDataSet {
+  values: BubbleValue[];
+  label: string;
+  config?: BubbleDataSetConfig;
+}
+
+export interface BubbleData {
+  dataSets: BubbleDataSet[];
+}
+
+// Candle chart specific configs
+export type PaintStyle = "FILL" | "STROKE" | "FILL_AND_STROKE";
+
+export interface CandleDataSetConfig extends CommonConfig, BarLineScatterCandleBubbleConfig, LineScatterCandleRadarConfig {
+  barSpace?: number;
+  shadowWidth?: number;
+  shadowColor?: number;
+  shadowColorSameAsCandle?: boolean;
+  neutralColor?: number;
+  decreasingColor?: number;
+  decreasingPaintStyle?: PaintStyle;
+  increasingColor?: number;
+  increasingPaintStyle?: PaintStyle;
+}
+
+export interface CandleDataSet {
+  values: CandleValue[];
+  label: string;
+  config?: CandleDataSetConfig;
+}
+
+export interface CandleData {
+  dataSets: CandleDataSet[];
+}
+
+// Pie chart specific configs
+export type ValuePosition = "INSIDE_SLICE" | "OUTSIDE_SLICE";
+
+export interface PieDataSetConfig extends CommonConfig {
+  sliceSpace?: number;
+  selectionShift?: number;
+  xValuePosition?: ValuePosition;
+  yValuePosition?: ValuePosition;
+  valueLinePart1Length?: number;
+  valueLinePart2Length?: number;
+  valueLineColor?: number;
+  valueLineWidth?: number;
+  valueLinePart1OffsetPercentage?: number;
+  valueLineVariableLength?: boolean;
+}
+
+export interface PieDataSet {
+  values: Array<PieValue | number>;
+  label: string;
+  config?: PieDataSetConfig;
+}
+
+export interface PieData {
+  dataSets: PieDataSet[];
+}
+
+// Radar chart specific configs
+export interface RadarDataSetConfig extends CommonConfig, LineScatterCandleRadarConfig, LineRadarConfig {}
+
+export interface RadarDataSet {
+  values: Array<RadarValue | number>;
+  label: string;
+  config?: RadarDataSetConfig;
+}
+
+export interface RadarData {
+  dataSets: RadarDataSet[];
+  labels?: string[];
+}
+
+// Scatter chart specific configs
+export type ScatterShape = "SQUARE" | "CIRCLE" | "TRIANGLE" | "CROSS" | "X";
+
+export interface ScatterDataSetConfig extends CommonConfig, BarLineScatterCandleBubbleConfig, LineScatterCandleRadarConfig {
+  scatterShapeSize?: number;
+  scatterShape?: ScatterShape;
+  scatterShapeHoleColor?: number;
+  scatterShapeHoleRadius?: number;
+}
+
+export interface ScatterDataSet {
+  values: Array<LineValue | number>; // LineValue is reused because the structure is the same
+  label: string;
+  config?: ScatterDataSetConfig;
+}
+
+export interface ScatterData {
+  dataSets: ScatterDataSet[];
+}
+
+// Combined data
+export interface CombinedData {
+  lineData?: LineData;
+  barData?: BarData;
+  scatterData?: ScatterData;
+  candleData?: CandleData;
+  bubbleData?: BubbleData;
+}
 
 export {
-  lineData,
-  barData,
-  pieData,
-  bubbleData,
-  scatterData,
-  candleData,
-  radarData,
-  combinedData
+  LineData as lineData,
+  BarData as barData,
+  PieData as pieData,
+  BubbleData as bubbleData,
+  ScatterData as scatterData,
+  CandleData as candleData,
+  RadarData as radarData,
+  CombinedData as combinedData
 };

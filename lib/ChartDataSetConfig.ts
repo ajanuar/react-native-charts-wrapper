@@ -1,75 +1,59 @@
-import PropTypes from 'prop-types';
+// Convert PropTypes to TypeScript interfaces
 
-const chartDataSetConfig = {
-  common: {
-    color: PropTypes.number,
-    colors: PropTypes.arrayOf(PropTypes.number),
-    highlightEnabled:PropTypes.bool,
-    drawValues: PropTypes.bool,
-    valueTextSize:PropTypes.number,
-    valueTextColor:PropTypes.number,
-    visible:PropTypes.bool,
-    valueFormatter: PropTypes.oneOfType([
-      PropTypes.oneOf(['largeValue', 'percent', 'date', 'labelByXValue']),
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string)
-    ]),
-    valueFormatterPattern: PropTypes.string,
-    valueFormatterLabels: PropTypes.arrayOf(PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      label: PropTypes.string.isRequired,
-    })),
-    axisDependency:PropTypes.oneOf(['LEFT', 'RIGHT'])
-  },
+export interface ValueFormatterLabel {
+  x: number;
+  label: string;
+}
 
-  barLineScatterCandleBubble: {
-    highlightColor: PropTypes.number
-  },
+export type ValueFormatterType = 'largeValue' | 'percent' | 'date' | 'labelByXValue' | string | string[];
 
-  lineScatterCandleRadar: {
-    drawVerticalHighlightIndicator: PropTypes.bool,
-    drawHorizontalHighlightIndicator: PropTypes.bool,
-    highlightLineWidth: PropTypes.number
-  },
+export type AxisDependency = 'LEFT' | 'RIGHT';
 
-  lineRadar: {
-    fillGradient: PropTypes.shape({
-      colors: PropTypes.arrayOf(PropTypes.number),
-      // iOS
-      positions: PropTypes.arrayOf(PropTypes.number),
-      angle: PropTypes.number,
-      // Android
-      orientation: PropTypes.oneOf([
-        // draw the gradient from the top to the bottom
-        'TOP_BOTTOM',
-        // draw the gradient from the top-right to the bottom-left
-        'TR_BL',
-        // draw the gradient from the right to the left
-        'RIGHT_LEFT',
-        // draw the gradient from the bottom-right to the top-left
-        'BR_TL',
-        // draw the gradient from the bottom to the top
-        'BOTTOM_TOP',
-        // draw the gradient from the bottom-left to the top-right
-        'BL_TR',
-        // draw the gradient from the left to the right
-        'LEFT_RIGHT',
-        // draw the gradient from the top-left to the bottom-right
-        'TL_BR',
-      ]),
-    }),
-    fillColor: PropTypes.number,
-    fillAlpha: PropTypes.number,
-    drawFilled: PropTypes.bool,
-    lineWidth: (props, propName, componentName) => {
-      let lineWidth = props[propName];
-      if (lineWidth && (typeof lineWidth !== 'number' || lineWidth < 0.2 || lineWidth > 10)) {
-        return new Error(
-          `Invalid prop ${propName} supplied to '${componentName}'. Value must be number and between 0.2f and 10f`
-        );
-      }
-    }
-  }
-};
+export type GradientOrientation = 
+  | 'TOP_BOTTOM'
+  | 'TR_BL'
+  | 'RIGHT_LEFT'
+  | 'BR_TL'
+  | 'BOTTOM_TOP'
+  | 'BL_TR'
+  | 'LEFT_RIGHT'
+  | 'TL_BR';
 
-export default chartDataSetConfig;
+export interface GradientConfig {
+  colors: number[];
+  positions?: number[];  // iOS
+  angle?: number;        // iOS
+  orientation?: GradientOrientation; // Android
+}
+
+export interface CommonConfig {
+  color?: number;
+  colors?: number[];
+  highlightEnabled?: boolean;
+  drawValues?: boolean;
+  valueTextSize?: number;
+  valueTextColor?: number;
+  visible?: boolean;
+  valueFormatter?: ValueFormatterType;
+  valueFormatterPattern?: string;
+  valueFormatterLabels?: ValueFormatterLabel[];
+  axisDependency?: AxisDependency;
+}
+
+export interface BarLineScatterCandleBubbleConfig extends CommonConfig {
+  highlightColor?: number;
+}
+
+export interface LineScatterCandleRadarConfig extends BarLineScatterCandleBubbleConfig {
+  drawVerticalHighlightIndicator?: boolean;
+  drawHorizontalHighlightIndicator?: boolean;
+  highlightLineWidth?: number;
+}
+
+export interface LineRadarConfig extends LineScatterCandleRadarConfig {
+  fillGradient?: GradientConfig;
+  fillColor?: number;
+  fillAlpha?: number;
+  drawFilled?: boolean;
+  lineWidth?: number; // must be between 0.2 and 10
+}
