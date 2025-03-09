@@ -25,7 +25,7 @@
     "ios/**/*.h",
     "ios/**/*.m",
     "ios/**/*.swift",
-    "lib",
+    "js",
     "index.js",
     "index.d.ts",
     "react-native-charts-wrapper.podspec",
@@ -49,5 +49,10 @@
     "prepare": "yarn build",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf lib/*.d.ts lib/*.js.map lib/*.js"
+  },
+  "codegenConfig": {
+    "name": "ReactNativeChartsWrapperSpec",
+    "type": "components",
+    "jsSrcsDir": "js"
   }
 }
