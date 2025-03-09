@@ -1,158 +1,90 @@
-import PropTypes from 'prop-types';
-import { Platform } from 'react-native';
-import {xAxisIface} from './AxisIface'
+import { XAxisInterface } from './AxisIface';
 
-// Create our own ViewPropTypes to replace the deprecated one
-const ViewPropTypes = {
-  // Common View Props
-  style: PropTypes.object,
-  accessible: PropTypes.bool,
-  accessibilityLabel: PropTypes.string,
-  accessibilityHint: PropTypes.string,
-  testID: PropTypes.string,
-  nativeID: PropTypes.string,
-  hitSlop: PropTypes.shape({
-    top: PropTypes.number,
-    left: PropTypes.number,
-    bottom: PropTypes.number,
-    right: PropTypes.number
-  }),
-  pointerEvents: PropTypes.oneOf(['box-none', 'none', 'box-only', 'auto']),
-  onLayout: PropTypes.func,
-  // Platform specific
-  ...(Platform.OS === 'android' ? {
-    renderToHardwareTextureAndroid: PropTypes.bool,
-    collapsable: PropTypes.bool,
-    needsOffscreenAlphaCompositing: PropTypes.bool,
-  } : {}),
-  ...(Platform.OS === 'ios' ? {
-    shouldRasterizeIOS: PropTypes.bool,
-  } : {})
+interface DescriptionProps {
+  text?: string;
+  textColor?: number;
+  textSize?: number;
+  positionX?: number;
+  positionY?: number;
+}
+
+type HorizontalAlignment = 'LEFT' | 'CENTER' | 'RIGHT';
+type VerticalAlignment = 'TOP' | 'CENTER' | 'BOTTOM';
+type Orientation = 'HORIZONTAL' | 'VERTICAL';
+type Direction = 'LEFT_TO_RIGHT' | 'RIGHT_TO_LEFT';
+type FormType = 'NONE' | 'EMPTY' | 'DEFAULT' | 'SQUARE' | 'CIRCLE' | 'LINE';
+
+interface LegendProps {
+  enabled?: boolean;
+  textColor?: number;
+  textSize?: number;
+  fontFamily?: string;
+  fontStyle?: number;
+  fontWeight?: number;
+  wordWrapEnabled?: boolean;
+  maxSizePercent?: number;
+  horizontalAlignment?: HorizontalAlignment;
+  verticalAlignment?: VerticalAlignment;
+  orientation?: Orientation;
+  drawInside?: boolean;
+  direction?: Direction;
+  form?: FormType;
+  formSize?: number;
+  xEntrySpace?: number;
+  yEntrySpace?: number;
+  formToTextSpace?: number;
+  custom?: {
+    colors?: number[];
+    labels?: string[];
+  };
+}
+
+interface AnimationProps {
+  durationX?: number;
+  durationY?: number;
+  easingX?: string;
+  easingY?: string;
+}
+
+interface MarkerProps {
+  enabled?: boolean;
+  digits?: number;
+  markerColor?: number;
+  textColor?: number;
+  textSize?: number;
+}
+
+interface HighlightProps {
+  x: number;
+  dataSetIndex?: number;
+  dataIndex?: number;
+  y?: number;
+  stackIndex?: number;
+}
+
+interface ChartProps {
+  animation?: AnimationProps;
+  chartBackgroundColor?: number;
+  logEnabled?: boolean;
+  noDataText?: string;
+  noDataTextColor?: number;
+  touchEnabled?: boolean;
+  dragDecelerationEnabled?: boolean;
+  dragDecelerationFrictionCoef?: number;
+  highlightPerTapEnabled?: boolean;
+  chartDescription?: DescriptionProps;
+  legend?: LegendProps;
+  xAxis?: XAxisInterface;
+  onYaxisMinMaxChange?: (event: any) => void;
+  marker?: MarkerProps;
+  highlights?: HighlightProps[];
+}
+
+export type { 
+  DescriptionProps,
+  LegendProps,
+  AnimationProps,
+  MarkerProps,
+  HighlightProps,
+  ChartProps
 };
-
-const descriptionIface = {
-  text: PropTypes.string,
-  textColor: PropTypes.number,
-  textSize: PropTypes.number,
-
-  positionX: PropTypes.number,
-  positionY: PropTypes.number,
-};
-
-const legendIface = {
-  enabled: PropTypes.bool,
-
-  textColor: PropTypes.number,
-  textSize: PropTypes.number,
-  fontFamily: PropTypes.string,
-  fontStyle: PropTypes.number,
-  fontWeight: PropTypes.number,
-
-  wordWrapEnabled: PropTypes.bool,
-  maxSizePercent: PropTypes.number,
-
-  horizontalAlignment: PropTypes.oneOf(['LEFT', 'CENTER', 'RIGHT']),
-  verticalAlignment: PropTypes.oneOf(['TOP', 'CENTER', 'BOTTOM']),
-  orientation: PropTypes.oneOf(['HORIZONTAL', 'VERTICAL']),
-  drawInside: PropTypes.bool,
-  direction: PropTypes.oneOf(['LEFT_TO_RIGHT', 'RIGHT_TO_LEFT']),
-
-  form: PropTypes.oneOf(['NONE', 'EMPTY', 'DEFAULT', 'SQUARE', 'CIRCLE', 'LINE']),
-  formSize: PropTypes.number,
-  xEntrySpace: PropTypes.number,
-  yEntrySpace: PropTypes.number,
-  formToTextSpace: PropTypes.number,
-
-  custom: PropTypes.shape({
-    colors: PropTypes.arrayOf(PropTypes.number),
-    labels: PropTypes.arrayOf(PropTypes.string)
-  })
-};
-
-const chartIface = {
-  propTypes: {
-    ...ViewPropTypes,
-
-    animation: PropTypes.shape({
-      durationX: PropTypes.number, // Millis
-      durationY: PropTypes.number, // Millis
-
-      // option of easingX, easingY:
-      // Linear,
-      // EaseInQuad,
-      // EaseOutQuad,
-      // EaseInOutQuad,
-      // EaseInCubic,
-      // EaseOutCubic,
-      // EaseInOutCubic,
-      // EaseInQuart,
-      // EaseOutQuart,
-      // EaseInOutQuart,
-      // EaseInSine,
-      // EaseOutSine,
-      // EaseInOutSine,
-      // EaseInExpo,
-      // EaseOutExpo,
-      // EaseInOutExpo,
-      // EaseInCirc,
-      // EaseOutCirc,
-      // EaseInOutCirc,
-      // EaseInElastic,
-      // EaseOutElastic,
-      // EaseInOutElastic,
-      // EaseInBack,
-      // EaseOutBack,
-      // EaseInOutBack,
-      // EaseInBounce,
-      // EaseOutBounce,
-      // EaseInOutBounce,
-      easingX: PropTypes.string,
-      easingY: PropTypes.string
-    }),
-
-    chartBackgroundColor: PropTypes.number,
-    logEnabled: PropTypes.bool,
-    noDataText: PropTypes.string,
-    noDataTextColor: PropTypes.number,
-
-    touchEnabled: PropTypes.bool,
-    dragDecelerationEnabled: PropTypes.bool,
-    dragDecelerationFrictionCoef: (props, propName, componentName) => {
-      let coef = props[propName];
-      if (coef && (typeof coef !== 'number' || coef < 0 || coef > 1)) {
-        return new Error(
-          `Invalid prop ${propName} supplied to '${componentName}'. Value must be number and between 0 and 1.`
-        );
-      }
-    },
-
-    highlightPerTapEnabled: PropTypes.bool,
-    chartDescription: PropTypes.shape(descriptionIface),
-
-    legend: PropTypes.shape(legendIface),
-
-    xAxis: PropTypes.shape(xAxisIface),
-    onYaxisMinMaxChange: PropTypes.func,
-
-    marker: PropTypes.shape({
-      enabled: PropTypes.bool,
-      digits: PropTypes.number,
-      markerColor: PropTypes.number,
-      textColor: PropTypes.number,
-      textSize: PropTypes.number,
-
-    }),
-
-    // stackIndex for StackBarChart
-    highlights: PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.number.isRequired,
-        dataSetIndex: PropTypes.number,  // this is used in stacked bar chart
-        dataIndex: PropTypes.number,  // this is necessary in combined chart when default highlight is set. the default sequence is line, bar, scatter, candle, bubble
-        y: PropTypes.number,
-        stackIndex: PropTypes.number
-      }))
-  }
-};
-
-export default chartIface;
